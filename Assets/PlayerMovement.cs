@@ -2,34 +2,37 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    Rigidbody rb;
+    [SerializeField] float movementSpeed = 6f;
+    [SerializeField] float jumpForce = 5f;
+
+    [SerializeField] Transform groundCheck;
+    [SerializeField] LayerMask ground;
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        rb.linearVelocity = new Vector3(horizontalInput * 5, rb.linearVelocity.y, verticalInput * 5);
+
+        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 5, 0);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 5, rb.linearVelocity.z);
         }
-        if (Input.GetKey("up"))
-        {
-            GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, 5);
-        }
-        if (Input.GetKey("down"))
-        {
-            GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, -5);
-        }
-        if (Input.GetKey("right"))
-        {
-            GetComponent<Rigidbody>().linearVelocity = new Vector3(5, 0, 0);
-        }
-        if (Input.GetKey("left"))
-        {
-            GetComponent<Rigidbody>().linearVelocity = new Vector3(-5, 0, 0);
-        }
+       
+        
+    }
+
+
+    bool IsGrounded()
+    {
+
+        return Physics.CheckSphere(groundCheck.position, .1f, ground);
     }
 }
