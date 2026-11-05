@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
+
+    [SerializeField] AudioSource jumpSound;
+    [SerializeField] AudioSource EnemyDeath;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     { 
          rb.linearVelocity = new Vector3(rb.linearVelocity.x, 5, rb.linearVelocity.z);
+        jumpSound.Play();
     }
 
 
@@ -39,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(collision.transform.parent.gameObject);
             Jump();
+            EnemyDeath.Play();
+
         }
     }
 
